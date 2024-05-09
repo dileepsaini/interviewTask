@@ -9,7 +9,7 @@
                             <a href="index.html"><i data-feather="grid"></i><span>Dashboard</span></a>
                         </li>
                         <li class="">
-                            <a href="javascript:void(0);"><i data-feather="user"></i><span>User List</span></a>
+                            <a href="javascript:void(0);"><i data-feather="user"></i><span>Books List</span></a>
                         </li>
                        
                     </ul>
