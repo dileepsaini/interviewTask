@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Books;
 use Validator;
+use PDF;
 class BooksPdfController extends Controller
 {
     /**
@@ -12,7 +13,8 @@ class BooksPdfController extends Controller
      */
     public function index()
     {
-        return view('admin.books.index');
+        $pdf = Books::find(3);
+        return view('admin.books.index',compact('pdf'));
     }
 
     /**
@@ -20,7 +22,8 @@ class BooksPdfController extends Controller
      */
     public function create()
     {
-        return view('admin.books.create');
+        $book = Books::find(3);
+        return view('admin.books.create', compact('book'));
     }
 
     /**
@@ -28,7 +31,7 @@ class BooksPdfController extends Controller
      */
     public function store(Request $request)
     {
-        
+       
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'author' => 'required',
@@ -40,8 +43,8 @@ class BooksPdfController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $frontImgPath = $request->file('frontImg')->store('images');
-        $backImgPath = $request->file('backImg')->store('images');
+        $frontImgPath = $request->file('frontImg')->store('images', 'public');
+        $backImgPath = $request->file('backImg')->store('images', 'public');
         $book = new Books;
         $book->book_name = $request->name;
         $book->author_name = $request->author;
@@ -49,7 +52,8 @@ class BooksPdfController extends Controller
         $book->back_img = $backImgPath;
         $book->content = $request->editordata;
         $book->save();
-DD('yes');
+
+       
         return redirect()->route('book.index')->with('success', 'Book added successfully!');
 
     }
@@ -57,9 +61,26 @@ DD('yes');
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function generatePDF()
     {
-        //
+        $book = Books::orderBy('id', 'desc')->first();
+        $firstPage = view('admin.books.first_page', ['frontimg' => $book])->render();
+
+        $lastPage = view('admin.books.last_page', ['backimg' => $book])->render();
+        
+        $middlePages = view('admin.books.middle_page', ['content' => $book->content])->render();
+        
+        
+
+        $pdf = PDF::loadView('admin.books.pdf_template', [
+            'firstPage' => $firstPage,
+            'middlePages' => $middlePages,
+            'lastPage' => $lastPage,
+            'book' => $book
+        ]);
+
+        // Download the PDF
+        return $pdf->download('book_pdf.pdf');
     }
 
     /**

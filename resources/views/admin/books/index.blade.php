@@ -10,7 +10,9 @@
             <div class="page-btn">
                 <a href="{{ route('book.create') }}" class="btn btn-added"><img src="{{ asset('admin/img/icons/plus.svg') }} " alt="img"
                         class="me-1">Add New Book</a>
+                    
             </div>
+            <a href="{{ route('book.generatePDF') }}" class="btn btn-info">pdf</a>
         </div>
         <div class="row">
             <table class="table">

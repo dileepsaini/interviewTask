@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/', 'index')->name('book.index');
         Route::get('/create', 'create')->name('book.create');
         Route::post('/store', 'store')->name('book.store');
+        Route::get('/generate-pdf', 'generatePDF')->name('book.generatePDF');
     });
     
 });

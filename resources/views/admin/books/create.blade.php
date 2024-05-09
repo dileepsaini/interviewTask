@@ -44,7 +44,7 @@
                     <div class="form-group">
                         <label for="">Back Image <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" name="backImg" id="backImg">
-                        @error('bakImg')
+                        @error('backImg')
                          <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('book_name');
             $table->string('author_name');
-            $table->text('content');
+            $table->longText('content');
             $table->string('front_img');
             $table->string('back_img');
             $table->timestamps();
