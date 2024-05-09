@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BooksPdfController;
 /*app\Http\Controllers\Auth\LoginController.php
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,8 +28,16 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function(){
-    Route::prefix('dashboard')->controller(DashboardController::class)->group(function(){
+    Route::prefix('/dashboard')->controller(DashboardController::class)->group(function(){
         Route::get('/', 'index');
+    });
+
+    //books controller
+    Route::prefix('/books')->controller(BooksPdfController::class)->group(function(){
+        Route::get('/', 'index')->name('book.index');
+        Route::get('/create', 'create')->name('book.create');
+        Route::post('/store', 'store')->name('book.store');
+        Route::get('/generate-pdf', 'generatePDF')->name('book.generatePDF');
     });
     
 });
